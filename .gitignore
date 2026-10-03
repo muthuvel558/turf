@@ -19,6 +19,11 @@
 
 # production
 /build
+/dist
+/scratch
+/playwright-report
+/test-results
+scratch_audit*
 
 # misc
 .DS_Store
