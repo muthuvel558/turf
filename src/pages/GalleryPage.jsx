@@ -7,7 +7,7 @@ export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState('ALL');
   const [activeLightboxImg, setActiveLightboxImg] = useState(null);
 
-  const categories = ['ALL', 'Turf Field', 'Lighting', 'Surface', 'Pitch Detail', 'Access', 'Amenities'];
+  const categories = ['ALL', 'Lighting', 'Surface', 'Pitch Detail', 'Access', 'Amenities'];
 
   const filteredImages = activeCategory === 'ALL'
     ? IMAGES.gallery
