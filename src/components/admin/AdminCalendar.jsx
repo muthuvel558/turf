@@ -70,67 +70,69 @@ export default function AdminCalendar() {
           Slots for {selectedDateStr}
         </h3>
 
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Time Slot</th>
-              <th>Status</th>
-              <th>Details / Reason</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {HOURLY_TIMES.map((time, idx) => {
-              // Check if booked by customer
-              const customerBooking = bookings.find(b => b.dateStr === selectedDateStr && b.startTime.includes(time.split(' - ')[0]) && b.status !== 'CANCELLED');
-              // Check if blocked by admin
-              const adminBlock = blockedSlots.find(b => b.dateStr === selectedDateStr && b.startTime.includes(time.split(' - ')[0]));
+        <div className="admin-table-wrapper">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Time Slot</th>
+                <th>Status</th>
+                <th>Details / Reason</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {HOURLY_TIMES.map((time, idx) => {
+                // Check if booked by customer
+                const customerBooking = bookings.find(b => b.dateStr === selectedDateStr && b.startTime.includes(time.split(' - ')[0]) && b.status !== 'CANCELLED');
+                // Check if blocked by admin
+                const adminBlock = blockedSlots.find(b => b.dateStr === selectedDateStr && b.startTime.includes(time.split(' - ')[0]));
 
-              let statusText = 'AVAILABLE';
-              let badgeClass = 'status-tag upcoming';
-              let details = 'Open for online booking';
+                let statusText = 'AVAILABLE';
+                let badgeClass = 'status-tag upcoming';
+                let details = 'Open for online booking';
 
-              if (customerBooking) {
-                statusText = 'BOOKED';
-                badgeClass = 'status-tag completed';
-                details = `Booked by ${customerBooking.customerName} (${customerBooking.phone})`;
-              } else if (adminBlock) {
-                statusText = 'BLOCKED';
-                badgeClass = 'status-tag blocked';
-                details = `Blocked: ${adminBlock.reason}`;
-              }
+                if (customerBooking) {
+                  statusText = 'BOOKED';
+                  badgeClass = 'status-tag completed';
+                  details = `Booked by ${customerBooking.customerName} (${customerBooking.phone})`;
+                } else if (adminBlock) {
+                  statusText = 'BLOCKED';
+                  badgeClass = 'status-tag blocked';
+                  details = `Blocked: ${adminBlock.reason}`;
+                }
 
-              return (
-                <tr key={idx}>
-                  <td><strong>{time}</strong></td>
-                  <td><span className={badgeClass}>{statusText}</span></td>
-                  <td>{details}</td>
-                  <td>
-                    {customerBooking ? (
-                      <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Customer Reserved</span>
-                    ) : adminBlock ? (
-                      <button 
-                        className="btn btn-secondary" 
-                        style={{ padding: '4px 10px', fontSize: '12px' }}
-                        onClick={() => handleUnblock(adminBlock.id)}
-                      >
-                        Unblock Slot
-                      </button>
-                    ) : (
-                      <button 
-                        className="btn btn-outline" 
-                        style={{ padding: '4px 10px', fontSize: '12px' }}
-                        onClick={() => handleOpenBlockModal(time)}
-                      >
-                        Block Slot
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                return (
+                  <tr key={idx}>
+                    <td><strong>{time}</strong></td>
+                    <td><span className={badgeClass}>{statusText}</span></td>
+                    <td>{details}</td>
+                    <td>
+                      {customerBooking ? (
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Customer Reserved</span>
+                      ) : adminBlock ? (
+                        <button 
+                          className="btn btn-secondary" 
+                          style={{ padding: '4px 10px', fontSize: '12px' }}
+                          onClick={() => handleUnblock(adminBlock.id)}
+                        >
+                          Unblock Slot
+                        </button>
+                      ) : (
+                        <button 
+                          className="btn btn-outline" 
+                          style={{ padding: '4px 10px', fontSize: '12px' }}
+                          onClick={() => handleOpenBlockModal(time)}
+                        >
+                          Block Slot
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Block Slot Modal */}

@@ -72,32 +72,34 @@ export default function AdminDashboard({ onNavigateTab }) {
             No bookings recorded for today yet.
           </div>
         ) : (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Time Slot</th>
-                <th>Sport</th>
-                <th>Customer</th>
-                <th>Phone</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {todayBookings.map((b) => (
-                <tr key={b.id}>
-                  <td><strong>{b.id}</strong></td>
-                  <td>{b.startTime}</td>
-                  <td>{b.sportName}</td>
-                  <td>{b.customerName}</td>
-                  <td>{b.phone}</td>
-                  <td>₹{b.amount}</td>
-                  <td><span className={`status-tag ${b.status.toLowerCase()}`}>{b.status}</span></td>
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Time Slot</th>
+                  <th>Sport</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Amount</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {todayBookings.map((b) => (
+                  <tr key={b.id}>
+                    <td><strong>{b.id}</strong></td>
+                    <td>{b.startTime}</td>
+                    <td>{b.sportName}</td>
+                    <td>{b.customerName}</td>
+                    <td>{b.phone}</td>
+                    <td>₹{b.amount}</td>
+                    <td><span className={`status-tag ${b.status.toLowerCase()}`}>{b.status}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

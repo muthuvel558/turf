@@ -22,7 +22,7 @@ export default function AdminBookings() {
       </div>
 
       {/* Filter Tabs */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
         {['ALL', 'UPCOMING', 'COMPLETED', 'CANCELLED'].map((filter) => (
           <button
             key={filter}
@@ -41,53 +41,55 @@ export default function AdminBookings() {
             No bookings matching criteria.
           </div>
         ) : (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Date & Time</th>
-                <th>Sport</th>
-                <th>Customer</th>
-                <th>Phone</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((b) => (
-                <tr key={b.id}>
-                  <td><strong>{b.id}</strong></td>
-                  <td>{b.dateStr} <br/><span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{b.startTime}</span></td>
-                  <td>{b.sportName}</td>
-                  <td>{b.customerName}</td>
-                  <td>{b.phone}</td>
-                  <td>₹{b.amount}</td>
-                  <td><span className={`status-tag ${b.status.toLowerCase()}`}>{b.status}</span></td>
-                  <td>
-                    {b.status === 'UPCOMING' && (
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <button 
-                          className="btn btn-outline" 
-                          style={{ padding: '2px 8px', fontSize: '12px' }}
-                          onClick={() => handleUpdateStatus(b.id, 'COMPLETED')}
-                        >
-                          Complete
-                        </button>
-                        <button 
-                          className="btn btn-secondary" 
-                          style={{ padding: '2px 8px', fontSize: '12px', color: '#DC2626' }}
-                          onClick={() => handleUpdateStatus(b.id, 'CANCELLED')}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    )}
-                  </td>
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Date & Time</th>
+                  <th>Sport</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((b) => (
+                  <tr key={b.id}>
+                    <td><strong>{b.id}</strong></td>
+                    <td>{b.dateStr} <br/><span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{b.startTime}</span></td>
+                    <td>{b.sportName}</td>
+                    <td>{b.customerName}</td>
+                    <td>{b.phone}</td>
+                    <td>₹{b.amount}</td>
+                    <td><span className={`status-tag ${b.status.toLowerCase()}`}>{b.status}</span></td>
+                    <td>
+                      {b.status === 'UPCOMING' && (
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button 
+                            className="btn btn-outline" 
+                            style={{ padding: '2px 8px', fontSize: '12px' }}
+                            onClick={() => handleUpdateStatus(b.id, 'COMPLETED')}
+                          >
+                            Complete
+                          </button>
+                          <button 
+                            className="btn btn-secondary" 
+                            style={{ padding: '2px 8px', fontSize: '12px', color: '#DC2626' }}
+                            onClick={() => handleUpdateStatus(b.id, 'CANCELLED')}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

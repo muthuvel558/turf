@@ -46,7 +46,7 @@ export default function OwnerPage() {
     <div className="admin-layout">
       {/* Admin Top Header */}
       <header className="admin-header">
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div className="container admin-header-content">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div className="header-logo-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
