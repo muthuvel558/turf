@@ -26,10 +26,10 @@ export default function TurfPage() {
           </div>
           <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>PITCH & ARENA</span>
           <h1 style={{ fontSize: '48px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
-            PRIMETURF ARENA SPECIFICATIONS
+            PRO-ENGINEERED ARENA PITCH
           </h1>
           <p className="lead" style={{ maxWidth: '640px', fontSize: '18px', color: 'rgba(255, 255, 255, 0.85)' }}>
-            Explore pitch dimensions, 50mm mono-filament grass fiber, player safety standards, and venue amenities.
+            Discover pitch dimensions, 50mm mono-filament artificial grass, anti-glare floodlighting, and matchday amenities.
           </p>
         </div>
       </div>
