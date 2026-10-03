@@ -20,33 +20,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
-          <div className="footer-col">
-            <div className="footer-title">Quick Links</div>
-            <div className="footer-links">
-              <Link to="/" className="footer-link">Home</Link>
-              <Link to="/turf" className="footer-link">Turf</Link>
-              <Link to="/pricing" className="footer-link">Pricing</Link>
-              <Link to="/gallery" className="footer-link">Gallery</Link>
-              <Link to="/about" className="footer-link">About</Link>
-              <Link to="/contact" className="footer-link">Contact</Link>
-            </div>
-          </div>
-
-          {/* Column 3: Booking & Policies */}
-          <div className="footer-col">
-            <div className="footer-title">Booking</div>
-            <div className="footer-links">
-              <Link to="/book" className="footer-link">Find a Slot</Link>
-              <Link to="/my-bookings" className="footer-link">My Bookings</Link>
-              <Link to="/turf" className="footer-link">Booking Policy</Link>
-              <Link to="/pricing" className="footer-link">Cancellation Policy</Link>
-              <Link to="/turf" className="footer-link">FAQ</Link>
-              <Link to="/owner" className="footer-link owner-link">Owner Login</Link>
-            </div>
-          </div>
-
-          {/* Column 4: Contact & Venue */}
+          {/* Column 2: Contact & Venue */}
           <div className="footer-col">
             <div className="footer-title">Contact</div>
             <div className="footer-contact-list">
@@ -69,6 +43,8 @@ export default function Footer() {
             <Link to="/pricing" className="legal-link">Terms</Link>
             <span>·</span>
             <Link to="/pricing" className="legal-link">Cancellation Policy</Link>
+            <span>·</span>
+            <Link to="/owner" className="legal-link" style={{ color: 'var(--brand-green)', fontWeight: '700' }}>Owner Console</Link>
           </div>
         </div>
       </div>
