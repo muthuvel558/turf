@@ -1,0 +1,53 @@
+{
+  "users": [
+    {
+      "id": "admin-1",
+      "name": "PrimeTurf Administrator",
+      "email": "muthuvelv3032@gmail.com",
+      "phone": "9876543210",
+      "passwordHash": "$2b$10$S0s8UfQoCZTOKTEOrwiOE.Un2hiMvAIFiQV72RHrBsZYURUGuAZjq",
+      "role": "ADMIN",
+      "createdAt": "2026-10-03T15:59:51.681Z",
+      "updatedAt": "2026-10-03T16:07:20.109Z",
+      "lastLoginAt": null
+    },
+    {
+      "id": "user-1",
+      "name": "Rahul Sharma",
+      "email": "user@example.com",
+      "phone": "9876543210",
+      "passwordHash": "$2b$10$pA/a0NKtTQJBWs0jeXohCu/ymsX3aKf3aEFVtSgt72cKdbW9gGFmS",
+      "role": "USER",
+      "createdAt": "2026-10-03T15:59:51.789Z",
+      "updatedAt": "2026-10-03T15:59:51.789Z",
+      "lastLoginAt": null
+    },
+    {
+      "id": "usr_1791043588394_7k06b",
+      "name": "Muthuvel v",
+      "email": "muthuvelv3032@gmail.com",
+      "phone": "6369737765",
+      "passwordHash": "$2b$10$GWGqwUGG//pcnVB7HzIMxu7DEwbGvdKNDCPIPJOLDz/XwJzB2r6K2",
+      "role": "USER",
+      "createdAt": "2026-10-03T16:06:28.394Z",
+      "updatedAt": "2026-10-03T16:06:28.394Z",
+      "lastLoginAt": "2026-10-03T16:06:28.396Z"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "PT-20260928-809",
+      "userId": "user-1",
+      "dateStr": "2026-10-05",
+      "startTime": "05:00 PM – 06:00 PM",
+      "sportName": "Football",
+      "customerName": "Rahul Sharma",
+      "phone": "9876543210",
+      "amount": 1200,
+      "status": "UPCOMING",
+      "createdAt": "2026-09-28T10:00:00Z"
+    }
+  ],
+  "resetTokens": [],
+  "blockedSlots": []
+}

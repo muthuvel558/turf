@@ -2,23 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { StoreManager } from '../data/store';
 import { VENUE_INFO } from '../data/venue';
+import { IMAGES } from '../data/images';
 
 export default function AboutPage() {
   const facility = StoreManager.getFacility();
 
   return (
     <div>
-      {/* Page Header / Hero Banner */}
-      <div style={{ backgroundColor: 'var(--bg-soft)', borderBottom: '1px solid var(--border-color)', padding: '52px 0 44px 0' }}>
-        <div className="container">
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--dark-green)', fontWeight: '600' }}>About</span>
+      {/* Page Header / Hero Banner with Cover Background */}
+      <div 
+        style={{ 
+          position: 'relative', 
+          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.75) 0%, rgba(11, 13, 12, 0.90) 100%), url(${IMAGES.turfHero})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderBottom: '1px solid var(--border-color)', 
+          padding: '84px 0 76px 0',
+          color: '#FFFFFF'
+        }}
+      >
+        <div className="container relative-z">
+          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
+            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>About</span>
           </div>
-          <span className="section-eyebrow">ABOUT PRIMETURF ARENA</span>
-          <h1 style={{ fontSize: '44px', fontWeight: '800', letterSpacing: '-0.02em', margin: '8px 0 12px 0', textTransform: 'uppercase' }}>
+          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>ABOUT PRIMETURF ARENA</span>
+          <h1 style={{ fontSize: '48px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
             BUILT FOR BETTER GAMES
           </h1>
-          <p className="lead" style={{ maxWidth: '640px', fontSize: '18px' }}>
+          <p className="lead" style={{ maxWidth: '640px', fontSize: '18px', color: 'rgba(255, 255, 255, 0.85)' }}>
             The story behind PrimeTurf Arena and our unwavering commitment to local sports enthusiasts.
           </p>
         </div>
@@ -45,9 +56,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Player Promise Section */}
-      <section style={{ padding: '72px 0', backgroundColor: '#F7F8F6', borderBottom: '1px solid var(--border-color)' }}>
-        <div className="container">
+      {/* Player Promise Section with Cover Image Backdrop */}
+      <section 
+        style={{ 
+          position: 'relative',
+          padding: '80px 0', 
+          backgroundImage: `linear-gradient(180deg, rgba(247, 248, 246, 0.94) 0%, rgba(247, 248, 246, 0.97) 100%), url(${IMAGES.evening})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderBottom: '1px solid var(--border-color)' 
+        }}
+      >
+        <div className="container relative-z">
           <div className="section-header text-center" style={{ marginBottom: '44px' }}>
             <span className="section-eyebrow">OUR COMMITMENT</span>
             <h2 className="section-title" style={{ fontSize: '36px', textTransform: 'uppercase' }}>
