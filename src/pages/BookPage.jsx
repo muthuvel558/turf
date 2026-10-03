@@ -4,12 +4,15 @@ import { format, parseISO } from 'date-fns';
 import DateSelector from '../components/DateSelector';
 import TimeSlot from '../components/TimeSlot';
 import BookingConfirmationOverlay from '../components/BookingConfirmationOverlay';
+import AuthModal from '../components/auth/AuthModal';
+import { useAuth } from '../context/AuthContext';
 import { generateDynamicSlots } from '../data/slots';
 import { StoreManager } from '../data/store';
 
 export default function BookPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const facility = StoreManager.getFacility();
   const activeSports = facility.sports.filter(s => s.active);
 
@@ -28,8 +31,27 @@ export default function BookPage() {
   const [selectedDuration, setSelectedDuration] = useState(initialState.durationMins || 60);
   const [selectedSlot, setSelectedSlot] = useState(initialState.slot || null);
 
+  // Auth modal trigger for unauthenticated users at checkout
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   // Customer Details Form State & Validation
-  const [formData, setFormData] = useState({ fullName: '', phone: '', email: '' });
+  const [formData, setFormData] = useState({
+    fullName: user?.name || '',
+    phone: user?.phone || '',
+    email: user?.email || ''
+  });
+
+  // Keep form data auto-filled if user logs in during booking
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        fullName: prev.fullName || user.name || '',
+        phone: prev.phone || user.phone || '',
+        email: prev.email || user.email || ''
+      }));
+    }
+  }, [user]);
+
   const [errors, setErrors] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState(null);
@@ -81,19 +103,40 @@ export default function BookPage() {
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
   };
 
-  const handleConfirmBooking = () => {
-    const newErrors = {};
-    if (!selectedSlot) newErrors.slot = 'Please select an available time slot to confirm your booking.';
-    if (!formData.fullName.trim()) newErrors.fullName = 'Please enter your full name.';
-    if (!/^[0-9]{10}$/.test(formData.phone.trim())) newErrors.phone = 'Please enter a valid 10-digit mobile number.';
-
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
-
+  const executeBookingProcess = async () => {
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      const newBooking = StoreManager.createBooking({
+    try {
+      // 1. Call Backend API for Server-Verified Booking Creation & Pricing Validation
+      const apiRes = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          sportId: selectedSport,
+          sportName: selectedSport === 'football' ? 'Football (5-a-side / 7-a-side)' : 'Box Cricket',
+          durationMins: selectedDuration,
+          dateStr: selectedDateStr,
+          startTime: selectedSlot.time,
+          customerName: formData.fullName,
+          phone: formData.phone
+        })
+      });
+
+      const apiData = await apiRes.json();
+      const serverBooking = apiData.booking || {
+        id: `PT-${selectedDateStr.replace(/-/g, '')}-${Math.floor(100 + Math.random() * 900)}`,
+        sportName: selectedSport === 'football' ? 'Football (5-a-side / 7-a-side)' : 'Box Cricket',
+        dateStr: selectedDateStr,
+        startTime: selectedSlot.time,
+        durationMins: selectedDuration,
+        amount: selectedSlot.totalPrice,
+        customerName: formData.fullName,
+        phone: formData.phone,
+        status: 'UPCOMING'
+      };
+
+      // 2. Also record in local store manager for synchronized prototype state
+      const localBooking = StoreManager.createBooking({
         sportId: selectedSport,
         sportName: selectedSport === 'football' ? 'Football (5-a-side / 7-a-side)' : 'Box Cricket',
         dateStr: selectedDateStr,
@@ -106,8 +149,30 @@ export default function BookPage() {
         players: '5-v-5',
       });
 
-      setConfirmedBooking(newBooking);
-    }, 1000);
+      setConfirmedBooking(serverBooking || localBooking);
+    } catch (err) {
+      console.error('Booking submission error:', err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleConfirmBooking = () => {
+    const newErrors = {};
+    if (!selectedSlot) newErrors.slot = 'Please select an available time slot to confirm your booking.';
+    if (!formData.fullName.trim()) newErrors.fullName = 'Please enter your full name.';
+    if (!/^[0-9]{10}$/.test(formData.phone.trim())) newErrors.phone = 'Please enter a valid 10-digit mobile number.';
+
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
+    // REQUIRE AUTHENTICATION AT CHECKOUT POINT ONLY (Preserving selected slot & inputs!)
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    executeBookingProcess();
   };
 
   return (
@@ -318,6 +383,17 @@ export default function BookPage() {
 
         </div>
       </div>
+
+      {/* AUTHENTICATION MODAL IF UNAUTHENTICATED AT CHECKOUT */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={() => {
+          setIsAuthModalOpen(false);
+          executeBookingProcess();
+        }}
+        title="Sign In to Complete Booking"
+      />
 
       {/* BOOKING CONFIRMATION OVERLAY WINDOW */}
       {confirmedBooking && (

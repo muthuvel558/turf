@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute, AdminRoute } from './components/auth/ProtectedRoute';
 
 // Styles
 import './styles/global.css';
@@ -24,7 +26,9 @@ import ContactPage from './pages/ContactPage';
 import BookPage from './pages/BookPage';
 import MyBookingsPage from './pages/MyBookingsPage';
 import BookingDetailPage from './pages/BookingDetailPage';
+import ProfilePage from './pages/ProfilePage';
 import OwnerPage from './pages/OwnerPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 
 // Scroll to Top Helper
 function ScrollToTop() {
@@ -37,37 +41,57 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
-        {/* Owner Console (Dedicated Layout) */}
-        <Route path="/owner/*" element={<OwnerPage />} />
+    <AuthProvider>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          {/* Admin Login Route */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
 
-        {/* Public Website & Booking Pages (Shared Header + Footer) */}
-        <Route
-          path="*"
-          element={
-            <div className="app-root">
-              <Header />
-              <main>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/turf" element={<TurfPage />} />
-                  <Route path="/pricing" element={<PricingPage />} />
-                  <Route path="/gallery" element={<GalleryPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/book" element={<BookPage />} />
-                  <Route path="/my-bookings" element={<MyBookingsPage />} />
-                  <Route path="/booking/:id" element={<BookingDetailPage />} />
-                  <Route path="/booking-success/:id" element={<BookingDetailPage />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          }
-        />
-      </Routes>
-    </Router>
+          {/* Protected Owner Console */}
+          <Route
+            path="/owner/*"
+            element={
+              <AdminRoute>
+                <OwnerPage />
+              </AdminRoute>
+            }
+          />
+
+          {/* Public Website & User Pages (Shared Header + Footer) */}
+          <Route
+            path="*"
+            element={
+              <div className="app-root">
+                <Header />
+                <main>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/turf" element={<TurfPage />} />
+                    <Route path="/pricing" element={<PricingPage />} />
+                    <Route path="/gallery" element={<GalleryPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/book" element={<BookPage />} />
+                    <Route
+                      path="/profile"
+                      element={
+                        <ProtectedRoute>
+                          <ProfilePage />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route path="/my-bookings" element={<MyBookingsPage />} />
+                    <Route path="/booking/:id" element={<BookingDetailPage />} />
+                    <Route path="/booking-success/:id" element={<BookingDetailPage />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }

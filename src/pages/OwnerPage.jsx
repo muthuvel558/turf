@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import AdminDashboard from '../components/admin/AdminDashboard';
 import AdminCalendar from '../components/admin/AdminCalendar';
 import AdminBookings from '../components/admin/AdminBookings';
@@ -11,9 +12,8 @@ import '../styles/admin.css';
 
 export default function OwnerPage() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Default true for easy prototype evaluation
-  const [passcode, setPasscode] = useState('');
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard' },
@@ -25,22 +25,10 @@ export default function OwnerPage() {
     { id: 'reviews', label: 'Reviews Moderation' },
   ];
 
-  if (!isAuthenticated) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-soft)', padding: '20px' }}>
-        <div style={{ backgroundColor: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '36px', maxWidth: '400px', width: '100%', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '24px', marginBottom: '8px' }}>Owner Login</h2>
-          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>Enter owner passcode to access business management console.</p>
-          <form onSubmit={(e) => { e.preventDefault(); setIsAuthenticated(true); }}>
-            <div className="form-group" style={{ marginBottom: '20px' }}>
-              <input type="password" placeholder="Passcode (any key)" value={passcode} onChange={(e) => setPasscode(e.target.value)} className="form-input" />
-            </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Login to Owner Console</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  const handleLogout = async () => {
+    await logout();
+    navigate('/admin/login');
+  };
 
   return (
     <div className="admin-layout">
@@ -58,9 +46,17 @@ export default function OwnerPage() {
             </span>
           </div>
 
-          <button className="btn btn-outline" onClick={() => navigate('/')}>
-            ← Back to Public Website
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+              Logged in as <strong>{user?.name || 'Administrator'}</strong>
+            </span>
+            <button className="btn btn-outline" onClick={() => navigate('/')}>
+              Public Website
+            </button>
+            <button className="btn btn-secondary" style={{ color: '#DC2626' }} onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </div>
       </header>
 
