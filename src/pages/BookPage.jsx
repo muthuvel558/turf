@@ -6,6 +6,7 @@ import TimeSlot from '../components/TimeSlot';
 import BookingConfirmationOverlay from '../components/BookingConfirmationOverlay';
 import { generateDynamicSlots } from '../data/slots';
 import { StoreManager } from '../data/store';
+import { IMAGES } from '../data/images';
 
 export default function BookPage() {
   const location = useLocation();
@@ -112,13 +113,33 @@ export default function BookPage() {
 
   return (
     <div className="booking-page-root">
-      <div className="container" style={{ padding: '32px 0 64px 0' }}>
-        
-        {/* Page Title */}
-        <div className="booking-header text-center" style={{ marginBottom: '28px' }}>
-          <h1 className="booking-title" style={{ fontSize: '32px' }}>BOOK YOUR SLOT</h1>
-          <p className="booking-subtitle">Select your game options, player details and confirm your reservation on one continuous page.</p>
+      {/* Page Header / Hero Cover Banner */}
+      <div 
+        style={{ 
+          position: 'relative',
+          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.75) 0%, rgba(11, 13, 12, 0.90) 100%), url(${IMAGES.turfHero})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderBottom: '1px solid var(--border-color)', 
+          padding: '64px 0 56px 0',
+          color: '#FFFFFF'
+        }}
+      >
+        <div className="container relative-z">
+          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
+            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>Book</span>
+          </div>
+          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>INSTANT RESERVATION</span>
+          <h1 style={{ fontSize: '42px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
+            BOOK YOUR SLOT
+          </h1>
+          <p className="lead" style={{ maxWidth: '640px', fontSize: '17px', color: 'rgba(255, 255, 255, 0.85)' }}>
+            Select your game mode, choose your date, pick a time slot and confirm your reservation on one continuous page.
+          </p>
         </div>
+      </div>
+
+      <div className="container" style={{ padding: '32px 0 64px 0' }}>
 
         {/* Single-Page Continuous Workspace */}
         <div className="booking-workspace-grid">

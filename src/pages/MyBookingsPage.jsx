@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { StoreManager } from '../data/store';
+import { IMAGES } from '../data/images';
 import RescheduleModal from '../components/RescheduleModal';
 import CancelModal from '../components/CancelModal';
 
@@ -24,14 +25,29 @@ export default function MyBookingsPage() {
 
   return (
     <div>
-      {/* Page Header */}
-      <div style={{ backgroundColor: 'var(--bg-soft)', borderBottom: '1px solid var(--border-color)', padding: '40px 0' }}>
-        <div className="container">
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--dark-green)', fontWeight: '600' }}>My Bookings</span>
+      {/* Page Header / Hero Cover Banner */}
+      <div 
+        style={{ 
+          position: 'relative',
+          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.75) 0%, rgba(11, 13, 12, 0.90) 100%), url(${IMAGES.evening})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderBottom: '1px solid var(--border-color)', 
+          padding: '84px 0 76px 0',
+          color: '#FFFFFF'
+        }}
+      >
+        <div className="container relative-z">
+          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
+            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>My Bookings</span>
           </div>
-          <h1 style={{ fontSize: '38px', marginBottom: '8px' }}>Your Bookings</h1>
-          <p className="lead">Manage your slot reservations, view receipts, or request rescheduling.</p>
+          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>MY BOOKINGS</span>
+          <h1 style={{ fontSize: '48px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
+            YOUR RESERVED SLOTS
+          </h1>
+          <p className="lead" style={{ maxWidth: '640px', fontSize: '18px', color: 'rgba(255, 255, 255, 0.85)' }}>
+            Manage your slot reservations, view booking receipts, request slot rescheduling or cancellation.
+          </p>
         </div>
       </div>
 
