@@ -40,6 +40,35 @@ export default function TurfPage() {
       {/* All Amenities */}
       <Amenities />
 
+      {/* Facility Proof Section */}
+      <section className="facility-proof-section">
+        <div className="container">
+          <div className="section-header text-center">
+            <span className="section-eyebrow">VISUAL PROOF</span>
+            <h2 className="section-title">FACILITY PROOF</h2>
+            <p className="lead">See the pitch, facilities and playing environment before you book.</p>
+          </div>
+
+          <div className="facility-proof-grid">
+            {IMAGES.gallery.slice(0, 6).map((img, idx) => (
+              <div key={idx} className="proof-card">
+                <img src={img.src} alt={img.title} className="proof-img" loading="lazy" />
+                <div className="proof-overlay">
+                  <span className="proof-category">{img.category}</span>
+                  <span className="proof-title">{img.title}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="section-cta-center">
+            <Link to="/gallery" className="btn btn-outline">
+              View Full Photo Gallery &rarr;
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Turf FAQ */}
       <FAQ />
 
