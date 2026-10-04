@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import SlotFinder from '../components/SlotFinder';
 import { StoreManager } from '../data/store';
 import { IMAGES } from '../data/images';
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const pricing = StoreManager.getPricing();
   const activeAmenities = StoreManager.getAmenities().filter(a => a.active);
   const galleryPreviews = IMAGES.gallery.slice(0, 6);
@@ -132,9 +133,13 @@ export default function HomePage() {
               <div className="rate-time">06:00 AM – 09:00 AM</div>
               <div className="rate-price">₹{pricing.morningPrice} <span className="per-hour">/ hour</span></div>
               <p className="rate-desc">Ideal for early morning practice and fitness sessions.</p>
-              <Link to="/book" className="btn btn-outline btn-full-width">
-                BOOK A SLOT &rarr;
-              </Link>
+              <button 
+                type="button"
+                onClick={() => navigate('/book', { state: { pricingPeriod: 'morning' } })} 
+                className="btn btn-outline btn-full-width"
+              >
+                BOOK THIS SLOT &rarr;
+              </button>
             </div>
 
             <div className="rate-card featured">
@@ -143,9 +148,13 @@ export default function HomePage() {
               <div className="rate-time">09:00 AM – 05:00 PM</div>
               <div className="rate-price">₹{pricing.regularPrice} <span className="per-hour">/ hour</span></div>
               <p className="rate-desc">Standard daytime casual games, practice & tournaments.</p>
-              <Link to="/book" className="btn btn-primary btn-full-width">
-                BOOK A SLOT &rarr;
-              </Link>
+              <button 
+                type="button"
+                onClick={() => navigate('/book', { state: { pricingPeriod: 'regular' } })} 
+                className="btn btn-primary btn-full-width"
+              >
+                BOOK THIS SLOT &rarr;
+              </button>
             </div>
 
             <div className="rate-card">
@@ -153,9 +162,13 @@ export default function HomePage() {
               <div className="rate-time">05:00 PM – 11:00 PM</div>
               <div className="rate-price">₹{pricing.eveningPrice} <span className="per-hour">/ hour</span></div>
               <p className="rate-desc">Floodlit prime night matches under high-lux LED lights.</p>
-              <Link to="/book" className="btn btn-outline btn-full-width">
-                BOOK A SLOT &rarr;
-              </Link>
+              <button 
+                type="button"
+                onClick={() => navigate('/book', { state: { pricingPeriod: 'evening' } })} 
+                className="btn btn-outline btn-full-width"
+              >
+                BOOK THIS SLOT &rarr;
+              </button>
             </div>
           </div>
         </div>

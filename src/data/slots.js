@@ -23,6 +23,41 @@ export function minsToTimeStr(mins) {
   return `${hh}:${mm} ${period}`;
 }
 
+export const PRICING_PERIODS = {
+  all: {
+    id: 'all',
+    name: 'All Hours',
+    timeRange: '06:00 AM – 11:00 PM',
+    startMins: 0,
+    endMins: 1440,
+    ratePerHour: 1000
+  },
+  morning: {
+    id: 'morning',
+    name: 'Morning Slot',
+    timeRange: '06:00 AM – 09:00 AM',
+    startMins: 360,
+    endMins: 540,
+    ratePerHour: 800
+  },
+  regular: {
+    id: 'regular',
+    name: 'Regular Day',
+    timeRange: '09:00 AM – 05:00 PM',
+    startMins: 540,
+    endMins: 1020,
+    ratePerHour: 1000
+  },
+  evening: {
+    id: 'evening',
+    name: 'Prime Evening',
+    timeRange: '05:00 PM – 11:00 PM',
+    startMins: 1020,
+    endMins: 1380,
+    ratePerHour: 1200
+  }
+};
+
 export function getPriceCategoryForMins(startMins) {
   // Morning Off-Peak: 06:00 AM - 09:00 AM
   if (startMins >= 360 && startMins < 540) {
@@ -71,8 +106,13 @@ export const SLOT_WINDOWS = {
 
 export const HOURLY_TIMES = SLOT_WINDOWS[60].map(w => `${minsToTimeStr(w.start)} - ${minsToTimeStr(w.end)}`);
 
-export function generateDynamicSlots(dateStr, durationMins = 60, bookings = [], blockedSlots = []) {
-  const windows = SLOT_WINDOWS[durationMins] || SLOT_WINDOWS[60];
+export function generateDynamicSlots(dateStr, durationMins = 60, bookings = [], blockedSlots = [], pricingPeriod = 'all') {
+  let windows = SLOT_WINDOWS[durationMins] || SLOT_WINDOWS[60];
+
+  if (pricingPeriod && PRICING_PERIODS[pricingPeriod] && pricingPeriod !== 'all') {
+    const { startMins, endMins } = PRICING_PERIODS[pricingPeriod];
+    windows = windows.filter(w => w.start >= startMins && w.start < endMins);
+  }
 
   return windows.map((w) => {
     const startTimeStr = minsToTimeStr(w.start);

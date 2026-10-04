@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { StoreManager } from '../data/store';
 
 export default function Pricing() {
+  const navigate = useNavigate();
   const pricing = StoreManager.getPricing();
 
   const plans = [
@@ -34,7 +36,7 @@ export default function Pricing() {
   return (
     <section className="pricing-section" id="pricing">
       <div className="container">
-        <div className="section-header">
+        <div className="section-header text-center">
           <span className="section-eyebrow">TRANSPARENT PRICING</span>
           <h2 className="section-title">Hourly Booking Rates</h2>
           <p className="lead">Simple per-hour pricing. No hidden registration or facility charges.</p>
@@ -56,13 +58,14 @@ export default function Pricing() {
                 </div>
                 <div className="pricing-desc">{plan.description}</div>
                 
-                <a 
-                  href="#slot-finder" 
+                <button 
+                  type="button"
+                  onClick={() => navigate('/book', { state: { pricingPeriod: plan.id } })} 
                   className={`btn ${isFeatured ? 'btn-primary' : 'btn-secondary'}`}
                   style={{ width: '100%' }}
                 >
                   Book This Slot &rarr;
-                </a>
+                </button>
               </div>
             );
           })}

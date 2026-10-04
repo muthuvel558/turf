@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import DateSelector from '../components/DateSelector';
 import TimeSlot from '../components/TimeSlot';
 import BookingConfirmationOverlay from '../components/BookingConfirmationOverlay';
-import { generateDynamicSlots } from '../data/slots';
+import { generateDynamicSlots, PRICING_PERIODS } from '../data/slots';
 import { StoreManager } from '../data/store';
 import { IMAGES } from '../data/images';
 
@@ -14,7 +14,7 @@ export default function BookPage() {
   const facility = StoreManager.getFacility();
   const activeSports = facility.sports.filter(s => s.active);
 
-  // Initial state passed from homepage/nav or defaults
+  // Initial state passed from pricing cards / nav or defaults
   const initialState = location.state || {};
 
   const [selectedSport, setSelectedSport] = useState(initialState.sport || activeSports[0]?.id || 'football');
@@ -27,6 +27,7 @@ export default function BookPage() {
   });
 
   const [selectedDuration, setSelectedDuration] = useState(initialState.durationMins || 60);
+  const [selectedPricingPeriod, setSelectedPricingPeriod] = useState(initialState.pricingPeriod || 'all');
   const [selectedSlot, setSelectedSlot] = useState(initialState.slot || null);
 
   // Customer Details Form State & Validation
@@ -42,12 +43,12 @@ export default function BookPage() {
   const bookings = StoreManager.getBookings();
   const blockedSlots = StoreManager.getBlockedSlots();
 
-  // Generate dynamic slots based on duration & live bookings
+  // Generate dynamic slots based on duration, live bookings, and selected pricing period filter
   const slots = useMemo(() => {
-    return generateDynamicSlots(selectedDateStr, selectedDuration, bookings, blockedSlots);
-  }, [selectedDateStr, selectedDuration, bookings, blockedSlots]);
+    return generateDynamicSlots(selectedDateStr, selectedDuration, bookings, blockedSlots, selectedPricingPeriod);
+  }, [selectedDateStr, selectedDuration, bookings, blockedSlots, selectedPricingPeriod]);
 
-  // Keep selected slot in sync if date/duration changes
+  // Keep selected slot in sync if date/duration/pricingPeriod changes
   useEffect(() => {
     if (selectedSlot) {
       const match = slots.find(s => s.startTime === selectedSlot.startTime && s.status === 'AVAILABLE');
@@ -57,7 +58,7 @@ export default function BookPage() {
         setSelectedSlot(null);
       }
     }
-  }, [selectedDateStr, selectedDuration]);
+  }, [selectedDateStr, selectedDuration, selectedPricingPeriod]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -111,6 +112,8 @@ export default function BookPage() {
     }, 1000);
   };
 
+  const activePeriodObj = PRICING_PERIODS[selectedPricingPeriod] || PRICING_PERIODS.all;
+
   return (
     <div className="booking-page-root">
       {/* Page Header / Hero Cover Banner */}
@@ -131,7 +134,7 @@ export default function BookPage() {
           </div>
           <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>INSTANT RESERVATION</span>
           <h1 style={{ fontSize: '42px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
-            BOOK YOUR SLOT
+            BOOK YOUR GAME
           </h1>
           <p className="lead" style={{ maxWidth: '640px', fontSize: '17px', color: 'rgba(255, 255, 255, 0.85)' }}>
             Select your game mode, choose your date, pick a time slot and confirm your reservation on one continuous page.
@@ -140,6 +143,46 @@ export default function BookPage() {
       </div>
 
       <div className="container" style={{ padding: '32px 0 64px 0' }}>
+
+        {/* PRICING PERIOD CONTEXT INDICATOR & SELECTOR */}
+        <div style={{ backgroundColor: '#F7F8F6', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '16px 20px', marginBottom: '28px', boxShadow: 'var(--shadow-sm)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: '800', color: 'var(--brand-green)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                SELECTED PRICING PERIOD
+              </div>
+              <div style={{ fontSize: '17px', fontWeight: '800', color: 'var(--text-primary)', marginTop: '2px' }}>
+                {activePeriodObj.name} 
+                <span style={{ fontWeight: '600', fontSize: '14px', color: 'var(--text-secondary)', marginLeft: '8px' }}>
+                  ({activePeriodObj.timeRange}) · ₹{activePeriodObj.ratePerHour}/hour
+                </span>
+              </div>
+            </div>
+
+            {/* Pricing Period Selector Pills */}
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'all', label: 'All Hours' },
+                { id: 'morning', label: 'Morning (06-09 AM)' },
+                { id: 'regular', label: 'Regular Day (09 AM-05 PM)' },
+                { id: 'evening', label: 'Prime Evening (05-11 PM)' }
+              ].map(period => (
+                <button
+                  key={period.id}
+                  type="button"
+                  className={`btn ${selectedPricingPeriod === period.id ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ fontSize: '12px', padding: '6px 14px', borderRadius: 'var(--radius-full)' }}
+                  onClick={() => {
+                    setSelectedPricingPeriod(period.id);
+                    setSelectedSlot(null);
+                  }}
+                >
+                  {period.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Single-Page Continuous Workspace */}
         <div className="booking-workspace-grid">
@@ -206,20 +249,26 @@ export default function BookPage() {
             {/* 04. AVAILABLE TIME SLOTS */}
             <div className="booking-form-row">
               <div className="slots-header-row">
-                <label className="field-section-label">04. AVAILABLE TIME SLOTS</label>
+                <label className="field-section-label">04. AVAILABLE TIME SLOTS ({activePeriodObj.name.toUpperCase()})</label>
                 <span className="live-badge">Real-time slots</span>
               </div>
 
-              <div className="time-slots-grid">
-                {slots.map((slot) => (
-                  <TimeSlot
-                    key={slot.id}
-                    slot={slot}
-                    isSelected={selectedSlot?.id === slot.id}
-                    onSelectSlot={handleSlotSelect}
-                  />
-                ))}
-              </div>
+              {slots.length === 0 ? (
+                <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--bg-soft)', borderRadius: 'var(--radius-md)' }}>
+                  No available slots found for {activePeriodObj.name} ({activePeriodObj.timeRange}) on this date/duration. Try switching pricing periods or date.
+                </div>
+              ) : (
+                <div className="time-slots-grid">
+                  {slots.map((slot) => (
+                    <TimeSlot
+                      key={slot.id}
+                      slot={slot}
+                      isSelected={selectedSlot?.id === slot.id}
+                      onSelectSlot={handleSlotSelect}
+                    />
+                  ))}
+                </div>
+              )}
 
               {errors.slot && (
                 <div className="inline-validation-error">
@@ -297,6 +346,10 @@ export default function BookPage() {
               </div>
 
               <div className="summary-details-list">
+                <div className="summary-detail-row">
+                  <span className="detail-label">Pricing Period</span>
+                  <span className="detail-value">{activePeriodObj.name}</span>
+                </div>
                 <div className="summary-detail-row">
                   <span className="detail-label">Sport</span>
                   <span className="detail-value">{selectedSport === 'football' ? 'Football' : 'Box Cricket'}</span>
