@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Pricing from '../components/Pricing';
 import { StoreManager } from '../data/store';
+import { VENUE_INFO } from '../data/venue';
 import { IMAGES } from '../data/images';
 
 export default function PricingPage() {
@@ -59,6 +60,30 @@ export default function PricingPage() {
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Book 60 minutes, 90 minutes (1.5 hrs), or 120 minutes (2 hrs). Price scales proportionally with no surge penalties.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cancellation & Reschedule Policy Box */}
+      <section style={{ padding: '72px 0', backgroundColor: 'var(--bg-soft)' }}>
+        <div className="container">
+          <div className="section-header text-center" style={{ marginBottom: '36px' }}>
+            <span className="section-eyebrow">POLICIES & SAFETY</span>
+            <h2 className="section-title" style={{ fontSize: '36px', textTransform: 'uppercase' }}>
+              CANCELLATION & RESCHEDULE POLICY
+            </h2>
+          </div>
+
+          <div style={{ maxWidth: '720px', margin: '0 auto', background: '#FFFFFF', border: '1px solid var(--border-color)', padding: '32px', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)' }}>
+            <div style={{ marginBottom: '16px', fontSize: '15px' }}>
+              <strong>Rescheduling Window:</strong> {VENUE_INFO.cancellationPolicy.rescheduleWindow}
+            </div>
+            <div style={{ marginBottom: '16px', fontSize: '15px' }}>
+              <strong>Refund Rules:</strong> {VENUE_INFO.cancellationPolicy.refundPolicy}
+            </div>
+            <div style={{ fontSize: '15px' }}>
+              <strong>Late Cancellations:</strong> {VENUE_INFO.cancellationPolicy.lateCancellation}
             </div>
           </div>
         </div>

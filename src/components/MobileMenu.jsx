@@ -27,9 +27,9 @@ export default function MobileMenu({ onClose }) {
   const links = [
     { label: "Home", to: "/" },
     { label: "Turf", to: "/turf" },
+    { label: "About", to: "/about" },
     { label: "Pricing", to: "/pricing" },
     { label: "Gallery", to: "/gallery" },
-    { label: "About", to: "/about" },
     { label: "Contact", to: "/contact" },
     { label: "My Bookings", to: "/my-bookings" },
   ];
