@@ -44,9 +44,6 @@ export default function BookingDetailPage() {
         title={`Booking ${booking.id}`}
         description="Manage your booking receipt, slot time, reschedule request, or cancellation."
         backgroundImage={IMAGES.evening}
-        stats={[
-          { label: "Status", value: booking.status }
-        ]}
       />
 
       <section style={{ padding: '48px 0', backgroundColor: 'var(--bg-primary)' }}>

@@ -16,11 +16,6 @@ export default function TurfPage() {
         title="Built for Better Games."
         description="A professionally maintained synthetic turf built for football, box cricket and regular match-day play."
         backgroundImage={IMAGES.turfHero}
-        stats={[
-          { label: "50mm Synthetic Grass" },
-          { label: "LED Floodlights" },
-          { label: "5-a-side / 7-a-side" }
-        ]}
       />
 
       {/* Turf Details & Pitch Specifications */}

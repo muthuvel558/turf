@@ -18,11 +18,6 @@ export default function PricingPage() {
         title="Simple Pricing. No Surprises."
         description="Choose your playing time, check availability and book the slot that works for your game."
         backgroundImage={IMAGES.evening}
-        stats={[
-          { label: "Morning" },
-          { label: "Regular" },
-          { label: "Prime Evening" }
-        ]}
       />
 
       {/* Main Pricing Cards */}
