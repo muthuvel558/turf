@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import InnerPageHero from '../components/InnerPageHero';
 import { StoreManager } from '../data/store';
 import { IMAGES } from '../data/images';
 
@@ -8,31 +9,14 @@ export default function AboutPage() {
 
   return (
     <div>
-      {/* Page Header / Hero Banner with Cover Background */}
-      <div 
-        style={{ 
-          position: 'relative', 
-          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.75) 0%, rgba(11, 13, 12, 0.90) 100%), url(${IMAGES.turfHero})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottom: '1px solid var(--border-color)', 
-          padding: '84px 0 76px 0',
-          color: '#FFFFFF'
-        }}
-      >
-        <div className="container relative-z">
-          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>About</span>
-          </div>
-          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>ABOUT PRIMETURF ARENA</span>
-          <h1 style={{ fontSize: '48px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
-            BUILT FOR BETTER GAMES
-          </h1>
-          <p className="lead" style={{ maxWidth: '640px', fontSize: '18px', color: 'rgba(255, 255, 255, 0.85)' }}>
-            The story behind PrimeTurf Arena and our unwavering commitment to local sports enthusiasts.
-          </p>
-        </div>
-      </div>
+      {/* Page Header / Hero Banner */}
+      <InnerPageHero
+        breadcrumb="Home / About"
+        eyebrow="ABOUT PRIME TURF ARENA"
+        title="Built Around the Game."
+        description="A dedicated sports turf designed to make booking, playing and returning simple."
+        backgroundImage={IMAGES.turfHero}
+      />
 
       {/* About Content & Story */}
       <section style={{ padding: '72px 0', backgroundColor: 'var(--bg-primary)', borderBottom: '1px solid var(--border-color)' }}>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
+import InnerPageHero from '../components/InnerPageHero';
 import DateSelector from '../components/DateSelector';
 import TimeSlot from '../components/TimeSlot';
 import BookingConfirmationOverlay from '../components/BookingConfirmationOverlay';
@@ -117,30 +118,13 @@ export default function BookPage() {
   return (
     <div className="booking-page-root">
       {/* Page Header / Hero Cover Banner */}
-      <div 
-        style={{ 
-          position: 'relative',
-          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.75) 0%, rgba(11, 13, 12, 0.90) 100%), url(${IMAGES.turfHero})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottom: '1px solid var(--border-color)', 
-          padding: '64px 0 56px 0',
-          color: '#FFFFFF'
-        }}
-      >
-        <div className="container relative-z">
-          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>Book</span>
-          </div>
-          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)' }}>INSTANT RESERVATION</span>
-          <h1 style={{ fontSize: '42px', fontWeight: '800', letterSpacing: '-0.02em', margin: '12px 0', textTransform: 'uppercase', color: '#FFFFFF' }}>
-            BOOK YOUR GAME
-          </h1>
-          <p className="lead" style={{ maxWidth: '640px', fontSize: '17px', color: 'rgba(255, 255, 255, 0.85)' }}>
-            Select your game mode, choose your date, pick a time slot and confirm your reservation on one continuous page.
-          </p>
-        </div>
-      </div>
+      <InnerPageHero
+        breadcrumb="Home / Book Your Game"
+        eyebrow="BOOK YOUR GAME"
+        title="Find Your Perfect Slot."
+        description="Choose your sport, date, duration and available time slot to reserve the pitch."
+        backgroundImage={IMAGES.turfHero}
+      />
 
       <div className="container" style={{ padding: '32px 0 64px 0' }}>
 

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import InnerPageHero from '../components/InnerPageHero';
 import { StoreManager } from '../data/store';
+import { IMAGES } from '../data/images';
 import RescheduleModal from '../components/RescheduleModal';
 import CancelModal from '../components/CancelModal';
 
@@ -36,17 +38,16 @@ export default function BookingDetailPage() {
   return (
     <div>
       {/* Header */}
-      <div style={{ backgroundColor: 'var(--bg-soft)', borderBottom: '1px solid var(--border-color)', padding: '32px 0' }}>
-        <div className="container">
-          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
-            <Link to="/my-bookings" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>My Bookings</Link> / <span style={{ color: 'var(--dark-green)', fontWeight: '600' }}>{booking.id}</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <h1 style={{ fontSize: '32px' }}>{booking.id}</h1>
-            <span className={`status-tag ${booking.status.toLowerCase()}`}>{booking.status}</span>
-          </div>
-        </div>
-      </div>
+      <InnerPageHero
+        breadcrumb={`Home / My Bookings / ${booking.id}`}
+        eyebrow="RESERVATION DETAILS"
+        title={`Booking ${booking.id}`}
+        description="Manage your booking receipt, slot time, reschedule request, or cancellation."
+        backgroundImage={IMAGES.evening}
+        stats={[
+          { label: "Status", value: booking.status }
+        ]}
+      />
 
       <section style={{ padding: '48px 0', backgroundColor: 'var(--bg-primary)' }}>
         <div className="container" style={{ maxWidth: '720px' }}>

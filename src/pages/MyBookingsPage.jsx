@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import InnerPageHero from '../components/InnerPageHero';
 import { StoreManager } from '../data/store';
 import { IMAGES } from '../data/images';
 import RescheduleModal from '../components/RescheduleModal';
@@ -47,51 +48,18 @@ export default function MyBookingsPage() {
   return (
     <div>
       {/* Page Header / Hero Cover Banner */}
-      <div 
-        style={{ 
-          position: 'relative',
-          backgroundImage: `linear-gradient(180deg, rgba(11, 13, 12, 0.78) 0%, rgba(11, 13, 12, 0.92) 100%), url(${IMAGES.evening})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          borderBottom: '1px solid var(--border-color)', 
-          padding: '48px 0 40px 0',
-          color: '#FFFFFF'
-        }}
-      >
-        <div className="container relative-z" style={{ maxWidth: '1100px' }}>
-          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '12px' }}>
-            <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}>Home</Link> / <span style={{ color: 'var(--brand-green)', fontWeight: '600' }}>My Bookings</span>
-          </div>
-
-          <span className="section-eyebrow" style={{ backgroundColor: 'rgba(22, 163, 74, 0.25)', color: '#4ADE80', borderColor: 'rgba(74, 222, 128, 0.3)', marginBottom: '8px' }}>
-            MY BOOKINGS
-          </span>
-
-          <h1 style={{ fontSize: '36px', fontWeight: '800', letterSpacing: '-0.02em', margin: '8px 0 6px 0', color: '#FFFFFF', textTransform: 'none' }}>
-            Your reserved games, all in one place.
-          </h1>
-
-          <p style={{ maxWidth: '600px', fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)', margin: '0 0 24px 0', lineHeight: '1.5' }}>
-            View upcoming games, manage reservations, and access your booking details.
-          </p>
-
-          {/* Hero Counter Pills */}
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <div className="hero-stat-pill">
-              <span className="stat-label">Upcoming</span>
-              <span className="stat-value">{String(upcomingCount).padStart(2, '0')}</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="stat-label">Completed</span>
-              <span className="stat-value">{String(completedCount).padStart(2, '0')}</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="stat-label">Cancelled</span>
-              <span className="stat-value">{String(cancelledCount).padStart(2, '0')}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <InnerPageHero
+        breadcrumb="Home / My Bookings"
+        eyebrow="MY BOOKINGS"
+        title="Your reserved games, all in one place."
+        description="View upcoming games, manage reservations, and access your booking details."
+        backgroundImage={IMAGES.evening}
+        stats={[
+          { label: "Upcoming", value: String(upcomingCount).padStart(2, '0') },
+          { label: "Completed", value: String(completedCount).padStart(2, '0') },
+          { label: "Cancelled", value: String(cancelledCount).padStart(2, '0') }
+        ]}
+      />
 
       {/* Main Content Workspace */}
       <section style={{ padding: '36px 0 60px 0', backgroundColor: 'var(--bg-primary)', minHeight: '60vh' }}>
